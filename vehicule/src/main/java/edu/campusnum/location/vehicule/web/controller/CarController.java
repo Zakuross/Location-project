@@ -1,23 +1,29 @@
 package edu.campusnum.location.vehicule.web.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import edu.campusnum.location.vehicule.dao.CarDao;
+import edu.campusnum.location.vehicule.model.Car;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 
 @RestController
-@RequestMapping("/cars")
 public class CarController {
 
-    @GetMapping
-    public String listCars() {
-        return "Vehicule 1";
+    @Autowired
+
+    private CarDao carDao;
+
+    @RequestMapping(value = "/cars", method = RequestMethod.GET)
+
+    public List<Car> listCars() { return carDao.findAll(); }
+
+    @ApiOperation(value = "Récupère un vehicule par son id")
+    @GetMapping(value = "/car/{id}")
+    public Car showCar(@PathVariable int id) {
+        return carDao.findById(id).orElse(null);
     }
 
-//    @GetMapping("/{id}")
-//    public Car showOneCar (@PathVariable int id) {
-//    }
 
 }
